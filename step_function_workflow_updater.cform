@@ -1,0 +1,54 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters" : {
+    "S3Key" : {
+      "Type" : "String",
+      "Description" : "The S3 Key to the workflow JSON for the state machine definition"
+    },
+    "SMResource" : {
+      "Type" : "String",
+      "Description" : "The identifier of the StateMachine resource whose workflow will be updated",
+      "Default" : "MyStateMachine"
+    }
+  },
+  "Transform" : [ "StepFunctionWorkflowInjector" ],
+  "Resources" : {
+    "MyStateMachine" : {
+      "Type": "AWS::StepFunctions::StateMachine",
+      "Properties": {
+        "DefinitionString": "{\"StartAt\":\"HelloWorld\",\"States\":{\"HelloWorld\":{\"End\":true,\"Result\":\"Hello World!\",\"Type\":\"Pass\"}}}",
+        "RoleArn": { "Fn::GetAtt" : [ "MyStateMachineRole", "Arn" ] }
+      }
+    },
+    "MyStateMachineRole" : {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": "lambda.amazonaws.com"
+                    },
+                    "Action": "sts:AssumeRole"
+                }
+            ]
+        },
+        "Path": "/",
+        "Policies": [ ]
+      }
+    }
+  },
+  "Outputs" : {
+    "StateMachineArn" : {
+      "Description" : "The Arn of the StateMachine that has been created",
+      "Value" : { "Ref" : "MyStateMachine" }
+    },
+    "RoleArn" : {
+      "Description" : "The Arn of the Role that the StateMachine will be using, allows policies to be added later",
+      "Value" : { "Fn::GetAtt" : [ "MyStateMachineRole", "Arn" ] }
+    }
+  }
+}
+
