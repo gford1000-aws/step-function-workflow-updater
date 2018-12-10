@@ -60,7 +60,7 @@ This is a simple Cloudformation template to declare the Lambda and associate it 
 
 This is a trivial Cloudformation template to declare the Lambda and associate it with the Cloudformation Macro:
 
-![alt text](https://github.com/gford1000-aws/step-function-workflow-updater/blob/master/step%20function%20workflow%20updater.png) "Script per designer")
+![alt text](https://github.com/gford1000-aws/step-function-workflow-updater/blob/master/step%20function%20workflow%20updater.png "Script per designer")
 
 ### Arguments
 
